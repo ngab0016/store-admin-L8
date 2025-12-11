@@ -1,15 +1,19 @@
 <template>
-  <TopNav />
-  <router-view
-    :orders="orders"
-    :products="products"
-    @fetchOrders="fetchOrders"
-    @completeOrder="completeOrder"
-    @addProductsToList="addProductsToList"
-    @updateProductInList="updateProductInList"
-    @getProduct="getProduct"
-    @getProducts="getProducts"
-  ></router-view>
+  <div class="admin-app">
+    <TopNav />
+    <div class="main-content">
+      <router-view
+        :orders="orders"
+        :products="products"
+        @fetchOrders="fetchOrders"
+        @completeOrder="completeOrder"
+        @addProductsToList="addProductsToList"
+        @updateProductInList="updateProductInList"
+        @getProduct="getProduct"
+        @getProducts="getProducts"
+      ></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -116,142 +120,211 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 120px;
-  padding: 1rem;
+/* --- GLOBAL VARIABLES (Best Buy Theme) --- */
+:root {
+  --primary-blue: #0046be;    /* Best Buy Blue */
+  --accent-yellow: #ffce00;   /* Best Buy Yellow */
+  --bg-color: #f0f2f5;        /* Light Gray Background */
+  --card-bg: #ffffff;
+  --text-dark: #1d252c;
+  --text-light: #555;
+  --border-color: #e0e0e0;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #333;
-  color: #fff;
-  padding: 1rem;
-  margin: 0;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-ul {
-  display: flex;
-  list-style: none;
+/* --- RESET & BODY --- */
+body {
   margin: 0;
   padding: 0;
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
 }
 
-li {
-  margin: 0 1rem;
+#app {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  margin-top: 80px; /* Space for fixed nav */
+  padding: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* --- TYPOGRAPHY --- */
+h1, h2, h3 {
+  color: var(--text-dark);
 }
 
 a {
-  color: #fff;
+  color: var(--primary-blue);
   text-decoration: none;
+  font-weight: 600;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
+a:hover {
+  text-decoration: underline;
 }
 
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.order-detail {
-  text-align: left;
-}
-
+/* --- BUTTONS --- */
 button {
-  padding: 10px;
-  background-color: #005f8b;
-  color: #fff;
+  background-color: var(--primary-blue);
+  color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
-  height: 42px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 button:hover {
-  background-color: #005f8b;
+  background-color: #003da6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-.action-button {
-  float: right;
+/* --- TABLES (Orders/Products List) --- */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-top: 1rem;
 }
 
-.product-detail {
-  text-align: left;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem auto;
+th {
+  background-color: #f8f9fa;
+  color: var(--text-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 1rem;
+  border-bottom: 2px solid var(--border-color);
 }
 
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: #f0f7ff; /* Very light blue on hover */
+}
+
+/* --- FORMS (Add/Edit Product) --- */
 .product-form {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: center;
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  max-width: 800px;
   margin: 2rem auto;
-  width: 50%;
+  text-align: left;
 }
 
 .form-row {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
 }
 
+label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+  text-align: left;
+  width: 100%;
+}
+
+input, textarea {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: var(--font-main);
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 70, 190, 0.1);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* --- UTILITY CLASSES --- */
+.action-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.order-detail {
+  text-align: left;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.product-detail {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* AI Button Special Style */
 .ai-button {
-  margin-left: 10px;
-  padding: 10px 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #007acc;
-  color: #fff;
-  cursor: pointer;
+  background-color: #007acc; /* Lighter blue/cyan */
+  margin-top: 10px;
+  width: auto;
+  align-self: flex-start;
 }
 
 .ai-button:hover {
   background-color: #005f8b;
 }
 
-textarea {
-  width: 100%;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-label {
-  text-align: right;
-  margin-right: 10px;
-  width: 100px;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+/* --- FOOTER --- */
+footer {
+  background-color: #1d252c;
+  color: #8898aa;
+  padding: 1.5rem;
+  margin-top: auto;
+  font-size: 0.9rem;
+  position: relative; /* Unfix footer so it sits at bottom of content */
+  bottom: auto;
 }
 </style>
